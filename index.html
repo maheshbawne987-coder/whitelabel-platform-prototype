@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniTenant // Multi-Tenant White-Label Platform</title>
+  <meta name="description" content="Next-generation multi-tenant white-label enterprise platform with live dynamic branding and role-based group filtering.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-tenant="acme" data-role="superadmin">
+  <!-- Interactive Aurora Ambient Glow Orbs -->
+  <div class="ambient-glow glow-primary" id="glowPrimary" aria-hidden="true"></div>
+  <div class="ambient-glow glow-accent" id="glowAccent" aria-hidden="true"></div>
+  <div class="bg-grid-overlay" aria-hidden="true"></div>
+
+  <!-- Auto-Demo Progress Bar -->
+  <div class="demo-progress-bar" id="demoProgressBar">
+    <div class="demo-progress-fill" id="demoProgressFill"></div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-left">
+      <!-- Tenant Dynamic Logo & Brand -->
+      <div class="brand-container" id="brandContainer" title="Active Tenant Brand">
+        <div class="brand-logo-wrapper" id="brandLogoWrapper">
+          <!-- Injected dynamically via JS -->
+        </div>
+        <div class="brand-meta">
+          <span class="brand-name" id="brandName">Acme Industrial</span>
+          <span class="brand-portal-tag" id="brandPortalTag">ENTERPRISE PORTAL</span>
+        </div>
+      </div>
+
+      <div class="nav-divider"></div>
+
+      <!-- Tenant Brand Switcher Dropdown -->
+      <div class="control-group">
+        <label for="tenantSelect" class="control-label">
+          <svg class="ctrl-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4 2a2 2 0 00-2 2v11a3 3 0 106 0V4a2 2 0 00-2-2H4zm1 14a1 1 0 100-2 1 1 0 000 2zm5-1.757l4.9-4.9a2 2 0 000-2.828L13.485 5.1a2 2 0 00-2.828 0L10 5.757v8.486zM16 18H9.071l6-6H16a2 2 0 012 2v2a2 2 0 01-2 2z" clip-rule="evenodd" />
+          </svg>
+          TENANT BRAND
+        </label>
+        <div class="custom-select-wrapper">
+          <select id="tenantSelect" class="tenant-dropdown" aria-label="Switch Tenant Brand">
+            <option value="acme" selected>🏢 Acme Industrial (Navy & Orange)</option>
+            <option value="zenith">🧬 Zenith Health & Bio (Slate & Emerald)</option>
+            <option value="nexus">⚡ Nexus AI Systems (Midnight & Cyber Violet)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <!-- Role-Based Access Switcher (Client Pain Point) -->
+      <div class="control-group">
+        <label for="roleSelect" class="control-label">
+          <svg class="ctrl-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+          USER ROLE TIER
+        </label>
+        <div class="custom-select-wrapper role-wrapper">
+          <select id="roleSelect" class="role-dropdown" aria-label="Switch User Role">
+            <option value="superadmin" selected>🛡️ Platform Superadmin (Full Access)</option>
+            <option value="vip">⭐ VIP / Strategic Partner (Tier 2)</option>
+            <option value="standard">👤 Standard Client Tier (Restricted)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="nav-actions">
+        <!-- ⚡ 8-Second Auto-Demo Button -->
+        <button id="btnAutoDemo" class="btn-demo" title="Run 8-Second Multi-Tenant Guided Demo (Hotkey: D)">
+          <span class="demo-lightning">⚡</span>
+          <span class="demo-text">Auto-Demo</span>
+          <span class="demo-badge">8s</span>
+        </button>
+
+        <!-- API Playground Drawer Toggle -->
+        <button id="btnToggleApiDrawer" class="btn-icon-labeled" title="Open API Playground & cURL Explorer (Hotkey: A)">
+          <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+          <span>API Playground</span>
+        </button>
+
+        <!-- Sound Synthesizer Toggle -->
+        <button id="btnToggleSound" class="btn-icon-only" aria-label="Toggle Audio Synthesizer" title="Toggle Audio Feedback (Hotkey: M)">
+          <span id="soundIcon" class="sound-icon">🔊</span>
+        </button>
+
+        <!-- Backend Connectivity Indicator -->
+        <div id="backendStatusPill" class="backend-pill standalone" title="Click to test live backend connection">
+          <span class="status-dot"></span>
+          <span class="status-label" id="backendStatusLabel">CDN Sandbox</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+    <!-- Dynamic Hero Section -->
+    <section class="tenant-hero" id="tenantHero">
+      <div class="hero-content">
+        <div class="hero-badge-row">
+          <span class="tenant-tag-pill" id="heroTenantTag">ACME ENTERPRISE SUITE</span>
+          <span class="active-role-pill" id="heroRolePill">
+            <span class="role-indicator-dot"></span>
+            Viewing as <strong id="heroRoleName">Platform Superadmin</strong>
+          </span>
+        </div>
+        <h1 class="hero-title" id="heroTitle">Heavy Industry Logistics & Enterprise Supply Engine</h1>
+        <p class="hero-subtitle" id="heroSubtitle">
+          Multi-tenant resource matrix with cryptographic group filtering, zero-trust partner segregation, and real-time ERP sync.
+        </p>
+
+        <!-- Live Platform Telemetry Metrics -->
+        <div class="hero-metrics-bar">
+          <div class="metric-card">
+            <span class="metric-val" id="metricTotal">6</span>
+            <span class="metric-label">Total Catalog Items</span>
+          </div>
+          <div class="metric-card highlight">
+            <span class="metric-val" id="metricAccessible">6</span>
+            <span class="metric-label">Accessible to You</span>
+          </div>
+          <div class="metric-card warning">
+            <span class="metric-val" id="metricRestricted">0</span>
+            <span class="metric-label">Restricted / Blocked</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-val" id="metricLatency">18ms</span>
+            <span class="metric-label">API Filter Latency</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Role-Based Filter Toolbar & Client Controls -->
+    <section class="catalog-toolbar">
+      <div class="toolbar-left">
+        <!-- Search Field -->
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+          </svg>
+          <input type="text" id="searchInput" placeholder="Search catalog by title, SKU, or tag..." autocomplete="off">
+          <button id="btnClearSearch" class="btn-clear-search" aria-label="Clear search">✕</button>
+        </div>
+
+        <!-- Filter Chips: All, Public, Partner, Confidential -->
+        <div class="group-filter-chips" role="radiogroup" aria-label="Filter items by access level">
+          <button class="chip active" data-filter="all">All Items (<span id="countAll">0</span>)</button>
+          <button class="chip" data-filter="public">🌐 Public (<span id="countPublic">0</span>)</button>
+          <button class="chip" data-filter="partner">⭐ Partner VIP (<span id="countPartner">0</span>)</button>
+          <button class="chip" data-filter="confidential">🔒 Confidential (<span id="countConfidential">0</span>)</button>
+        </div>
+      </div>
+
+      <div class="toolbar-right">
+        <!-- Inaccessible Items Toggle -->
+        <label class="toggle-switch-wrapper" title="Toggle visibility of locked items">
+          <input type="checkbox" id="toggleHideRestricted">
+          <span class="slider"></span>
+          <span class="toggle-text">Hide Locked Items</span>
+        </label>
+
+        <!-- Admin Action: Create Item (Enabled for Superadmin only) -->
+        <button id="btnCreateItem" class="btn-primary-action" title="Create a new multi-tenant item (Superadmin only)">
+          <svg class="btn-icon-sm" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          <span>Add Catalog Item</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Role Permission Banner: Explaining what current user can see -->
+    <div class="role-notice-banner" id="roleNoticeBanner">
+      <!-- Injected dynamically based on role -->
+    </div>
+
+    <!-- Items Grid Section -->
+    <section class="items-grid-section">
+      <div class="items-grid" id="itemsGrid">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+      <!-- Empty state container -->
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <div class="empty-icon">🔍</div>
+        <h3>No Catalog Items Match Your Criteria</h3>
+        <p>Try clearing your search query or adjusting the group access filter above.</p>
+        <button class="btn-secondary" id="btnResetFilters">Reset Filters</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive API Playground & Explorer Drawer -->
+  <aside class="api-drawer" id="apiDrawer" aria-hidden="true">
+    <div class="api-drawer-header">
+      <div class="api-title-group">
+        <div class="api-badge-icon">⚡</div>
+        <div>
+          <h3>Interactive API Playground</h3>
+          <p>Test multi-tenant endpoints with live role authorization & query parameters</p>
+        </div>
+      </div>
+      <button class="btn-close-drawer" id="btnCloseApiDrawer" aria-label="Close API Explorer">✕</button>
+    </div>
+
+    <div class="api-drawer-body">
+      <!-- Token Generator Panel -->
+      <div class="api-card">
+        <div class="api-card-header">
+          <span class="card-title-sm">1. BEARER TOKEN AUTHENTICATION</span>
+          <button class="btn-text-sm" id="btnGenNewToken">🔄 Refresh Token</button>
+        </div>
+        <div class="token-input-row">
+          <input type="text" id="apiBearerToken" readonly class="token-input" value="acme_sec_live_9a7d2b4f">
+          <button class="btn-copy" id="btnCopyToken" title="Copy Token">Copy</button>
+        </div>
+        <div class="token-claims-info">
+          <span>Active Role Scope: <strong id="tokenRoleScope">superadmin</strong></span>
+          <span>Tenant Scope: <strong id="tokenTenantScope">acme</strong></span>
+        </div>
+      </div>
+
+      <!-- Endpoint Query Builder -->
+      <div class="api-card">
+        <span class="card-title-sm">2. REQUEST BUILDER</span>
+        <div class="request-builder-grid">
+          <div class="field-item">
+            <label for="apiMethod">HTTP Method</label>
+            <select id="apiMethod" class="api-select">
+              <option value="GET">GET</option>
+              <option value="POST">POST (Admin Item Create)</option>
+            </select>
+          </div>
+          <div class="field-item">
+            <label for="apiGroupParam">Role Group Filter</label>
+            <select id="apiGroupParam" class="api-select">
+              <option value="all">?group=all (Full Catalog)</option>
+              <option value="public">?group=public (Public Only)</option>
+              <option value="partner">?group=partner (VIP & Partner)</option>
+              <option value="confidential">?group=confidential (Superadmin Only)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="endpoint-display-box">
+          <span class="http-badge">GET</span>
+          <span class="endpoint-url" id="apiEndpointUrl">/api/v1/acme/items?group=all</span>
+        </div>
+
+        <div class="api-actions-row">
+          <button class="btn-send-api" id="btnSendApiRequest">
+            <span class="btn-spinner" id="apiSpinner"></span>
+            <span>Send Request</span>
+          </button>
+          <button class="btn-copy-curl" id="btnCopyCurl">
+            <svg class="curl-icon" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z" />
+              <path d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.586 13H15a2 2 0 01-2 2H5a2 2 0 01-2-2V5z" />
+            </svg>
+            <span>Copy cURL</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Response Viewer -->
+      <div class="api-card response-card">
+        <div class="response-header">
+          <span class="card-title-sm">3. LIVE SERVER RESPONSE</span>
+          <div class="response-meta-tags">
+            <span class="status-code-pill status-200" id="apiStatusPill">200 OK</span>
+            <span class="latency-pill" id="apiLatencyPill">18ms</span>
+          </div>
+        </div>
+        <pre class="json-viewer" id="apiJsonViewer"><code>{
+  "status": "idle",
+  "message": "Click 'Send Request' to inspect live multi-tenant payload."
+}</code></pre>
+      </div>
+
+      <!-- Ready-to-Use cURL Preview -->
+      <div class="api-card">
+        <span class="card-title-sm">GENERATED CURL COMMAND</span>
+        <pre class="curl-code-box"><code id="curlCommandPreview">curl -X GET "https://api.omnicatalog.io/v1/acme/items?group=all" \
+  -H "Authorization: Bearer acme_sec_live_9a7d2b4f" \
+  -H "X-Tenant-ID: acme" \
+  -H "Accept: application/json"</code></pre>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Backdrop for Drawer / Modals -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+  <!-- Modal: Add New Item (Superadmin Only) -->
+  <div class="modal-overlay" id="createItemModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add New Catalog Item</h3>
+        <button class="btn-close-modal" id="btnCloseCreateModal">✕</button>
+      </div>
+      <form id="createItemForm" class="modal-form">
+        <div class="form-group">
+          <label for="newItemTenant">Tenant Brand</label>
+          <select id="newItemTenant" class="form-input">
+            <option value="acme">Acme Industrial</option>
+            <option value="zenith">Zenith Health & Bio</option>
+            <option value="nexus">Nexus AI Systems</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="newItemTitle">Item Title *</label>
+          <input type="text" id="newItemTitle" class="form-input" placeholder="e.g. High-Pressure Hydraulic Actuator v3" required>
+        </div>
+        <div class="form-group">
+          <label for="newItemGroup">Security / Access Group Tier *</label>
+          <select id="newItemGroup" class="form-input" required>
+            <option value="public">🌐 PUBLIC (Visible to all tiers)</option>
+            <option value="partner">⭐ PARTNER ONLY (VIP Strategic Partners & Superadmin)</option>
+            <option value="confidential">🔒 CONFIDENTIAL (Platform Superadmin Only)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="newItemCategory">Category / System</label>
+          <input type="text" id="newItemCategory" class="form-input" placeholder="e.g. Telemetry / Hardware / AI Models" value="Core Infrastructure">
+        </div>
+        <div class="form-group">
+          <label for="newItemDescription">Description *</label>
+          <textarea id="newItemDescription" class="form-input" rows="3" placeholder="Detailed technical specification or resource description..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="newItemTags">Tags (comma separated)</label>
+          <input type="text" id="newItemTags" class="form-input" placeholder="e.g. v2.1, ITAR, Realtime, Automated" value="Tier-1, Production">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" id="btnCancelCreate">Cancel</button>
+          <button type="submit" class="btn-primary-action">Publish Catalog Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Client Script -->
+  <script src="app.js"></script>
+</body>
+</html>
